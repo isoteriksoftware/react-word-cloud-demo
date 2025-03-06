@@ -2,16 +2,19 @@
 
 import { Footer } from "../Footer";
 import { TextArea } from "../TextArea";
-import { ChangeEvent, useCallback, useMemo, useState } from "react";
+import { ChangeEvent, Ref, useCallback, useMemo, useState } from "react";
 import { Button } from "../Button";
 import { extractWords } from "@/common/utils";
 import {
   DefaultTooltipRenderer,
+  SpiralValue,
   TooltipRendererData,
   Word,
   WordCloud,
-  animatedWordRenderer,
+  WordRendererData,
+  AnimatedWordRenderer,
 } from "react-word-cloud";
+import { useDemoControls } from "@/common/hooks";
 
 const INITIAL_TEXT = `
 In the rapidly evolving landscape of modern society, innovation stands as the lifeblood of progress. Over the past few decades, technological breakthroughs have redefined the way we communicate, work, and even think about our world. From the advent of the internet to the proliferation of smart devices, each development has woven a richer tapestry of opportunities and challenges.
@@ -33,23 +36,35 @@ Moreover, cultural shifts and social dynamics continue to shape the narrative of
 In summary, the vibrant tapestry of modern innovation is an intricate blend of technological prowess, creative expression, economic dynamism, educational transformation, and environmental stewardship. Each thread in this tapestry is essential, contributing to a complex, interwoven narrative that defines our era. As we continue to navigate the challenges and opportunities of the 21st century, it is the collaborative spirit of humanity—its endless curiosity and resilience—that will ultimately guide us toward a brighter, more inclusive future.
 ` as const;
 
-const MAX_FONT_SIZE = 100;
-const MIN_FONT_SIZE = 30;
-const MAX_FONT_WEIGHT = 700;
-const MIN_FONT_WEIGHT = 400;
-const MAX_WORDS = 10000;
-const minRotation = -270;
-const maxRotation = 270;
-
 export const DemoPage = () => {
   const [text, setText] = useState<string>(INITIAL_TEXT);
   const [textToUse, setTextToUse] = useState<string>(INITIAL_TEXT);
 
+  const {
+    width,
+    height,
+    timeInterval,
+    spiral,
+    padding,
+    font,
+    fontStyle,
+    transition,
+    minFontSize,
+    maxFontSize,
+    minFontWeight,
+    maxFontWeight,
+    minRotation,
+    maxRotation,
+    maxWords,
+    animationDurationMultiplier,
+    enableTooltip,
+  } = useDemoControls();
+
   const words = useMemo(() => extractWords(textToUse), [textToUse]);
 
   const sortedWords = useMemo(
-    () => words.sort((a, b) => b.value - a.value).slice(0, MAX_WORDS),
-    [words],
+    () => words.sort((a, b) => b.value - a.value).slice(0, maxWords),
+    [maxWords, words],
   );
 
   const [minOccurrences, maxOccurrences] = useMemo(() => {
@@ -62,20 +77,20 @@ export const DemoPage = () => {
     (wordOccurrences: number) => {
       const normalizedValue =
         (wordOccurrences - minOccurrences) / (maxOccurrences - minOccurrences);
-      const fontSize = MIN_FONT_SIZE + normalizedValue * (MAX_FONT_SIZE - MIN_FONT_SIZE);
+      const fontSize = minFontSize + normalizedValue * (maxFontSize - minFontSize);
       return Math.round(fontSize);
     },
-    [maxOccurrences, minOccurrences],
+    [maxFontSize, maxOccurrences, minFontSize, minOccurrences],
   );
 
   const calculateFontWeight = useCallback(
     (wordOccurrences: number) => {
       const normalizedValue =
         (wordOccurrences - minOccurrences) / (maxOccurrences - minOccurrences);
-      const fontWeight = MIN_FONT_WEIGHT + normalizedValue * (MAX_FONT_WEIGHT - MIN_FONT_WEIGHT);
+      const fontWeight = minFontWeight + normalizedValue * (maxFontWeight - minFontWeight);
       return Math.round(fontWeight);
     },
-    [maxOccurrences, minOccurrences],
+    [maxFontWeight, maxOccurrences, minFontWeight, minOccurrences],
   );
 
   const resoleFontWeight = useCallback(
@@ -87,7 +102,7 @@ export const DemoPage = () => {
 
   const resolveRotate = useCallback(() => {
     return Math.floor(Math.random() * (maxRotation - minRotation + 1) + minRotation);
-  }, []);
+  }, [maxRotation, minRotation]);
 
   const resolveFontSize = useCallback(
     (word: Word) => {
@@ -122,6 +137,17 @@ export const DemoPage = () => {
     [],
   );
 
+  const resolveWordRenderer = useCallback(
+    (data: WordRendererData, ref: Ref<SVGTextElement> | undefined) => (
+      <AnimatedWordRenderer
+        data={data}
+        ref={ref}
+        animationDelay={(_word, index) => index * animationDurationMultiplier}
+      />
+    ),
+    [animationDurationMultiplier],
+  );
+
   const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
@@ -146,14 +172,14 @@ export const DemoPage = () => {
           height: "90%",
           display: "flex",
           alignItems: "center",
-          gap: "30px",
+          gap: "50px",
           padding: "30px",
         }}
       >
         <div
           style={{
-            width: "30%",
-            height: "80%",
+            width: "20%",
+            height: "90%",
             display: "flex",
             flexDirection: "column",
             gap: "30px",
@@ -169,20 +195,25 @@ export const DemoPage = () => {
           style={{
             flexGrow: 1,
             paddingRight: "5%",
+            height: "90%",
           }}
         >
           <WordCloud
-            words={words}
-            width={1800}
-            height={1000}
-            font={"Impact"}
+            words={sortedWords}
+            width={width}
+            height={height}
+            timeInterval={timeInterval}
+            spiral={spiral as SpiralValue}
+            transition={transition}
+            font={font}
+            fontStyle={fontStyle}
             fontWeight={resoleFontWeight}
-            padding={1}
             fontSize={resolveFontSize}
+            padding={padding}
             rotate={resolveRotate}
-            renderWord={animatedWordRenderer}
+            renderWord={resolveWordRenderer}
             renderTooltip={resoleTooltipRenderer}
-            enableTooltip
+            enableTooltip={enableTooltip}
           />
         </div>
       </div>
