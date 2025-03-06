@@ -6,12 +6,11 @@ import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { Button } from "../Button";
 import { extractWords } from "@/common/utils";
 import {
+  DefaultTooltipRenderer,
+  TooltipRendererData,
   Word,
   WordCloud,
-  WordRendererData,
-  AnimatedWordRenderer,
-  TooltipRendererData,
-  DefaultTooltipRenderer,
+  animatedWordRenderer,
 } from "react-word-cloud";
 
 const INITIAL_TEXT = `
@@ -34,12 +33,13 @@ Moreover, cultural shifts and social dynamics continue to shape the narrative of
 In summary, the vibrant tapestry of modern innovation is an intricate blend of technological prowess, creative expression, economic dynamism, educational transformation, and environmental stewardship. Each thread in this tapestry is essential, contributing to a complex, interwoven narrative that defines our era. As we continue to navigate the challenges and opportunities of the 21st century, it is the collaborative spirit of humanity—its endless curiosity and resilience—that will ultimately guide us toward a brighter, more inclusive future.
 ` as const;
 
-const MAX_FONT_SIZE = 200;
+const MAX_FONT_SIZE = 100;
 const MIN_FONT_SIZE = 30;
 const MAX_FONT_WEIGHT = 700;
 const MIN_FONT_WEIGHT = 400;
-const MAX_WORDS = 300;
-const rotationWeights = [0, 0, 90, 270];
+const MAX_WORDS = 10000;
+const minRotation = -270;
+const maxRotation = 270;
 
 export const DemoPage = () => {
   const [text, setText] = useState<string>(INITIAL_TEXT);
@@ -86,7 +86,7 @@ export const DemoPage = () => {
   );
 
   const resolveRotate = useCallback(() => {
-    return rotationWeights[Math.floor(Math.random() * rotationWeights.length)];
+    return Math.floor(Math.random() * (maxRotation - minRotation + 1) + minRotation);
   }, []);
 
   const resolveFontSize = useCallback(
@@ -94,11 +94,6 @@ export const DemoPage = () => {
       return calculateFontSize(word.value);
     },
     [calculateFontSize],
-  );
-
-  const resolveWordRenderer = useCallback(
-    (data: WordRendererData) => <AnimatedWordRenderer data={data} />,
-    [],
   );
 
   const resoleTooltipRenderer = useCallback(
@@ -113,8 +108,14 @@ export const DemoPage = () => {
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
         }}
         textStyle={{
+          fontFamily: data.word?.font,
+          fontSize: "16px",
+          fontWeight: data.word?.weight,
+        }}
+        valueStyle={{
           fontFamily: "Arial",
           fontSize: "16px",
+          fontWeight: "normal",
         }}
       />
     ),
@@ -179,7 +180,7 @@ export const DemoPage = () => {
             padding={1}
             fontSize={resolveFontSize}
             rotate={resolveRotate}
-            renderWord={resolveWordRenderer}
+            renderWord={animatedWordRenderer}
             renderTooltip={resoleTooltipRenderer}
             enableTooltip
           />
