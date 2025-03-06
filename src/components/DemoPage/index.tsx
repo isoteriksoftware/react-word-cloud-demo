@@ -15,35 +15,23 @@ import {
 } from "react-word-cloud";
 
 const INITIAL_TEXT = `
-How the Word Cloud Generator Works
+In the rapidly evolving landscape of modern society, innovation stands as the lifeblood of progress. Over the past few decades, technological breakthroughs have redefined the way we communicate, work, and even think about our world. From the advent of the internet to the proliferation of smart devices, each development has woven a richer tapestry of opportunities and challenges.
 
-The layout algorithm for positioning words without overlap is available on GitHub under an open source license as d3-cloud. Note that this is the only the layout algorithm and any code for converting text into words and rendering the final output requires additional development.
+At the heart of these advancements lies an insatiable human curiosity—a drive to explore, understand, and ultimately transform our environment. This inquisitive spirit has given rise to groundbreaking discoveries in science, medicine, and engineering. Researchers harness quantum mechanics to revolutionize computing, while medical professionals utilize genomic insights to create personalized treatments that defy conventional paradigms. The confluence of these disciplines has fostered an era of interdisciplinary synergy, where biology meets computer science, and physics blends with artificial intelligence.
 
-As word placement can be quite slow for more than a few hundred words, the layout algorithm can be run asynchronously, with a configurable time step size. This makes it possible to animate words as they are placed without stuttering. It is recommended to always use a time step even without animations as it prevents the browser’s event loop from blocking while placing the words.
+Yet, innovation is not confined solely to technology. Artistic expression, too, has experienced a renaissance, catalyzed by digital tools that empower creators to push the boundaries of visual art, music, and literature. Contemporary artists leverage virtual reality to build immersive experiences that challenge the sensory perceptions of their audiences. Musicians experiment with algorithmically generated sounds, interlacing classical compositions with electronic beats to produce symphonies that transcend traditional genres. Writers and poets utilize digital platforms to share their narratives with a global audience, fostering cross-cultural dialogue and understanding.
 
-The layout algorithm itself is incredibly simple. For each word, starting with the most “important”:
+The economic implications of such dynamic progress are equally profound. Global markets have shifted as entrepreneurial ventures harness the power of e-commerce, blockchain, and fintech to disrupt established industries. Startups emerge from bustling urban centers and remote rural hubs alike, each striving to solve persistent societal problems with novel solutions. Venture capital and crowdfunding have become integral in this ecosystem, channeling resources toward promising innovations while simultaneously challenging conventional financial models.
 
-Attempt to place the word at some starting point: usually near the middle, or somewhere on a central horizontal line.
-If the word intersects with any previously placed words, move it one step along an increasing spiral. Repeat until no intersections are found.
-The hard part is making it perform efficiently! According to Jonathan Feinberg, Wordle uses a combination of hierarchical bounding boxes and quadtrees to achieve reasonable speeds.
+Education, another cornerstone of civilization, has undergone transformative change. Traditional classrooms are increasingly supplemented—or even replaced—by interactive, online learning environments. These platforms offer personalized learning experiences, adaptive testing, and real-time feedback, enabling students to acquire knowledge at their own pace. Such digital transformation is not only democratizing education but also equipping future generations with the critical skills necessary to thrive in an interconnected, digital economy.
 
-Glyphs in JavaScript
+Despite these positive trends, the journey is not without its hurdles. The acceleration of technological progress brings with it ethical dilemmas and regulatory challenges. Privacy concerns, cybersecurity threats, and the digital divide are just a few of the issues that require vigilant oversight. Policymakers and industry leaders must collaborate to establish frameworks that protect individual rights while encouraging innovation. The balance between innovation and regulation remains a delicate one—complex, yet essential for sustainable progress.
 
-There isn’t a way to retrieve precise glyph shapes via the DOM, except perhaps for SVG fonts. Instead, we draw each word to a hidden canvas element, and retrieve the pixel data.
+Environmental sustainability is another critical dimension of modern innovation. As global populations rise and resource consumption intensifies, the need for eco-friendly technologies becomes increasingly urgent. Renewable energy sources such as solar, wind, and geothermal power are transforming the global energy landscape, reducing reliance on fossil fuels and mitigating climate change. Innovations in waste management, water purification, and sustainable agriculture are equally important, as they aim to preserve the delicate equilibrium between human activity and the natural world.
 
-Retrieving the pixel data separately for each word is expensive, so we draw as many words as possible and then retrieve their pixels in a batch operation.
+Moreover, cultural shifts and social dynamics continue to shape the narrative of progress. The democratization of information via social media platforms has altered public discourse, challenging traditional media structures and giving voice to marginalized communities. In parallel, global connectivity fosters a multicultural dialogue that enriches the collective human experience. Social movements harness the power of digital networks to advocate for equality, environmental protection, and human rights, underscoring the pivotal role that technology plays in societal transformation.
 
-Sprites and Masks
-
-My initial implementation performed collision detection using sprite masks. Once a word is placed, it doesn't move, so we can copy it to the appropriate position in a larger sprite representing the whole placement area.
-
-The advantage of this is that collision detection only involves comparing a candidate sprite with the relevant area of this larger sprite, rather than comparing with each previous word separately.
-
-Somewhat surprisingly, a simple low-level hack made a tremendous difference: when constructing the sprite I compressed blocks of 32 1-bit pixels into 32-bit integers, thus reducing the number of checks (and memory) by 32 times.
-
-In fact, this turned out to beat my hierarchical bounding box with quadtree implementation on everything I tried it on (even very large areas and font sizes). I think this is primarily because the sprite version only needs to perform a single collision test per candidate area, whereas the bounding box version has to compare with every other previously placed word that overlaps slightly with the candidate area.
-
-Another possibility would be to merge a word’s tree with a single large tree once it is placed. I think this operation would be fairly expensive though compared with the analagous sprite mask operation, which is essentially ORing a whole block.
+In summary, the vibrant tapestry of modern innovation is an intricate blend of technological prowess, creative expression, economic dynamism, educational transformation, and environmental stewardship. Each thread in this tapestry is essential, contributing to a complex, interwoven narrative that defines our era. As we continue to navigate the challenges and opportunities of the 21st century, it is the collaborative spirit of humanity—its endless curiosity and resilience—that will ultimately guide us toward a brighter, more inclusive future.
 ` as const;
 
 const MAX_FONT_SIZE = 200;
@@ -163,7 +151,7 @@ export const DemoPage = () => {
       >
         <div
           style={{
-            width: "40%",
+            width: "30%",
             height: "80%",
             display: "flex",
             flexDirection: "column",
@@ -179,7 +167,7 @@ export const DemoPage = () => {
         <div
           style={{
             flexGrow: 1,
-            paddingRight: "30px",
+            paddingRight: "5%",
           }}
         >
           <WordCloud
