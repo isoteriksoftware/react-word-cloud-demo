@@ -1,9 +1,6 @@
-import { SpiralValue } from "react-word-cloud";
 import { useControls } from "leva";
 
 type DemoControls = {
-  width: number;
-  height: number;
   timeInterval: number;
   spiral: string;
   padding: number;
@@ -23,8 +20,6 @@ type DemoControls = {
 
 export function useDemoControls(): DemoControls {
   const {
-    width,
-    height,
     timeInterval,
     spiral,
     padding,
@@ -41,8 +36,6 @@ export function useDemoControls(): DemoControls {
     animationDurationMultiplier,
     enableTooltip,
   } = useControls({
-    width: { value: 1800, min: 100, max: 3000, step: 10, label: "Width" },
-    height: { value: 1000, min: 100, max: 3000, step: 10, label: "Height" },
     timeInterval: { value: 1, min: 0, max: 9999, step: 0.1, label: "Time Interval" },
     spiral: { value: "archimedean", options: ["archimedean", "rectangular"], label: "Spiral" },
     padding: { value: 1, min: 0, max: 1000, step: 1, label: "Padding" },
@@ -94,8 +87,6 @@ export function useDemoControls(): DemoControls {
   });
 
   return {
-    width,
-    height,
     timeInterval,
     spiral,
     padding,

@@ -17,23 +17,42 @@ import {
 import { useDemoControls } from "@/common/hooks";
 
 const INITIAL_TEXT = `
-In the rapidly evolving landscape of modern society, innovation stands as the lifeblood of progress. Over the past few decades, technological breakthroughs have redefined the way we communicate, work, and even think about our world. From the advent of the internet to the proliferation of smart devices, each development has woven a richer tapestry of opportunities and challenges.
+THE MODERN WEB DEVELOPMENT LANDSCAPE: HARNESSING CUTTING-EDGE TOOLS FOR DYNAMIC APPLICATIONS
 
-At the heart of these advancements lies an insatiable human curiosity—a drive to explore, understand, and ultimately transform our environment. This inquisitive spirit has given rise to groundbreaking discoveries in science, medicine, and engineering. Researchers harness quantum mechanics to revolutionize computing, while medical professionals utilize genomic insights to create personalized treatments that defy conventional paradigms. The confluence of these disciplines has fostered an era of interdisciplinary synergy, where biology meets computer science, and physics blends with artificial intelligence.
+In today’s fast-paced digital world, web development has evolved into a multifaceted discipline where innovation, performance, and scalability are paramount. Modern web applications benefit from a combination of powerful libraries, build tools, and visualization frameworks that work together seamlessly. This article explores key technologies—React, Vite, D3, d3-cloud, and Next.js—that are shaping the future of fullstack development and discusses how they can be integrated to build dynamic, data-driven experiences.
 
-Yet, innovation is not confined solely to technology. Artistic expression, too, has experienced a renaissance, catalyzed by digital tools that empower creators to push the boundaries of visual art, music, and literature. Contemporary artists leverage virtual reality to build immersive experiences that challenge the sensory perceptions of their audiences. Musicians experiment with algorithmically generated sounds, interlacing classical compositions with electronic beats to produce symphonies that transcend traditional genres. Writers and poets utilize digital platforms to share their narratives with a global audience, fostering cross-cultural dialogue and understanding.
+REACT: THE FOUNDATION OF INTERACTIVE USER INTERFACES
 
-The economic implications of such dynamic progress are equally profound. Global markets have shifted as entrepreneurial ventures harness the power of e-commerce, blockchain, and fintech to disrupt established industries. Startups emerge from bustling urban centers and remote rural hubs alike, each striving to solve persistent societal problems with novel solutions. Venture capital and crowdfunding have become integral in this ecosystem, channeling resources toward promising innovations while simultaneously challenging conventional financial models.
+React has transformed the way developers build user interfaces with its component-based architecture that enables the creation of reusable and modular UI components that update efficiently when data changes. Its declarative nature simplifies the process of managing complex state and ensures that the UI remains in sync with underlying data. Developers leverage hooks such as useState, useEffect, useCallback, and useMemo to encapsulate logic and optimize rendering performance. By applying memoization techniques and building pure functional components, applications built with React can handle high-frequency updates and dynamic content without sacrificing speed or responsiveness.
 
-Education, another cornerstone of civilization, has undergone transformative change. Traditional classrooms are increasingly supplemented—or even replaced—by interactive, online learning environments. These platforms offer personalized learning experiences, adaptive testing, and real-time feedback, enabling students to acquire knowledge at their own pace. Such digital transformation is not only democratizing education but also equipping future generations with the critical skills necessary to thrive in an interconnected, digital economy.
+VITE: ACCELERATING DEVELOPMENT WITH NEXT-GENERATION BUILD TOOLS
 
-Despite these positive trends, the journey is not without its hurdles. The acceleration of technological progress brings with it ethical dilemmas and regulatory challenges. Privacy concerns, cybersecurity threats, and the digital divide are just a few of the issues that require vigilant oversight. Policymakers and industry leaders must collaborate to establish frameworks that protect individual rights while encouraging innovation. The balance between innovation and regulation remains a delicate one—complex, yet essential for sustainable progress.
+Vite has emerged as a revolutionary build tool designed for modern web development. With near-instant hot module replacement and lightning-fast startup times, Vite significantly reduces the feedback loop during development. Unlike traditional bundlers that rely on complex configurations, Vite leverages native ES modules in the browser, making it ideal for rapid prototyping and iterative development. Its built-in TypeScript support, along with features such as code splitting and tree-shaking, enables developers to maintain a clean and efficient codebase. Vite’s streamlined configuration and focus on performance have made it indispensable in modern web development workflows.
 
-Environmental sustainability is another critical dimension of modern innovation. As global populations rise and resource consumption intensifies, the need for eco-friendly technologies becomes increasingly urgent. Renewable energy sources such as solar, wind, and geothermal power are transforming the global energy landscape, reducing reliance on fossil fuels and mitigating climate change. Innovations in waste management, water purification, and sustainable agriculture are equally important, as they aim to preserve the delicate equilibrium between human activity and the natural world.
+D3 AND D3-CLOUD: TRANSFORMING DATA INTO INTERACTIVE VISUALIZATIONS
 
-Moreover, cultural shifts and social dynamics continue to shape the narrative of progress. The democratization of information via social media platforms has altered public discourse, challenging traditional media structures and giving voice to marginalized communities. In parallel, global connectivity fosters a multicultural dialogue that enriches the collective human experience. Social movements harness the power of digital networks to advocate for equality, environmental protection, and human rights, underscoring the pivotal role that technology plays in societal transformation.
+Data visualization plays a crucial role in modern applications, and D3.js is widely recognized as the leader in this area. D3 binds data to the DOM and applies data-driven transformations, enabling developers to create stunning, interactive visualizations that communicate complex information effectively. A particularly interesting application of D3 is the creation of word clouds using d3-cloud. This specialized layout algorithm dynamically computes positions, rotations, and sizes for words based on their frequency or importance, resulting in an engaging visual representation of textual data that adapts to various datasets. Integrating d3-cloud with D3’s visualization capabilities produces word clouds that are not only aesthetically pleasing but also rich in information, making them powerful tools for data analysis and storytelling.
 
-In summary, the vibrant tapestry of modern innovation is an intricate blend of technological prowess, creative expression, economic dynamism, educational transformation, and environmental stewardship. Each thread in this tapestry is essential, contributing to a complex, interwoven narrative that defines our era. As we continue to navigate the challenges and opportunities of the 21st century, it is the collaborative spirit of humanity—its endless curiosity and resilience—that will ultimately guide us toward a brighter, more inclusive future.
+NEXT.JS: BRIDGING THE GAP BETWEEN FRONTEND AND BACKEND
+
+Next.js has redefined fullstack web development by seamlessly integrating server-side rendering, static site generation, and client-side interactivity. This robust framework enables developers to build high-performance, SEO-friendly web applications with minimal configuration. With its file-based routing, built-in API routes, and support for incremental static regeneration, Next.js simplifies the management of both frontend and backend logic within a single codebase. By combining Next.js with React, developers can create applications that render dynamic content quickly and reliably, whether serving pre-rendered pages or handling real-time data updates. Next.js offers the flexibility needed to deliver smooth, responsive user experiences across a variety of devices and network conditions.
+
+INTEGRATING TECHNOLOGIES FOR A COHESIVE FULLSTACK EXPERIENCE
+
+The true power of modern web development lies in the ability to integrate diverse technologies into a cohesive workflow. A single application can use React for its dynamic user interface, Vite for rapid development and fast builds, D3 and d3-cloud for compelling data visualizations, and Next.js to manage both client-side interactions and server-side logic. This integration allows developers to build applications that are visually engaging, robust, and scalable. For example, an application might display a dynamic word cloud generated from user-provided text. React components manage user interactions and state, d3-cloud calculates the layout asynchronously to avoid blocking the main thread, Vite accelerates the development process, and Next.js ensures the application is optimized for SEO and interactivity. Together, these technologies form a seamless ecosystem that empowers developers to create high-quality, innovative web applications.
+
+BEST PRACTICES IN MODERN WEB DEVELOPMENT
+
+Modern web development is not just about using the latest tools—it’s about applying best practices to ensure performance, maintainability, and user satisfaction. Developers today focus on:
+
+Performance Optimization: Utilizing techniques like memoization, lazy loading, and code splitting to ensure smooth performance even with dynamic, data-intensive applications.
+Responsive Design: Building interfaces that adapt to various screen sizes and devices, ensuring that visualizations like word clouds remain legible and well-organized.
+Modular Architecture: Organizing code into reusable components and hooks to manage complexity and improve maintainability.
+Continuous Learning: Staying updated with the latest frameworks and technologies, experimenting with new tools, and continuously refining one’s skills.
+Seamless Integration: Combining different tools—React, Vite, D3, d3-cloud, and Next.js—into a unified development workflow to deliver efficient, scalable, and interactive applications.
+CONCLUSION
+
+The modern web development landscape is rich with powerful tools and frameworks that empower developers to create dynamic, interactive, and scalable applications. By harnessing React’s component model, Vite’s blazing-fast builds, D3’s data visualization prowess, d3-cloud’s specialized word layout algorithm, and Next.js’s fullstack capabilities, developers can build applications that are not only technically impressive but also deeply engaging for users. This harmonious integration of technologies, combined with best practices and a commitment to continuous learning, is defining the future of web development. As these tools continue to evolve, the journey of innovation will push the boundaries of what’s possible on the web, paving the way for increasingly sophisticated digital experiences.
 ` as const;
 
 export const DemoPage = () => {
@@ -41,8 +60,6 @@ export const DemoPage = () => {
   const [textToUse, setTextToUse] = useState<string>(INITIAL_TEXT);
 
   const {
-    width,
-    height,
     timeInterval,
     spiral,
     padding,
@@ -178,7 +195,7 @@ export const DemoPage = () => {
       >
         <div
           style={{
-            width: "20%",
+            width: "30%",
             height: "90%",
             display: "flex",
             flexDirection: "column",
@@ -193,15 +210,15 @@ export const DemoPage = () => {
 
         <div
           style={{
-            flexGrow: 1,
+            width: "70%",
             paddingRight: "5%",
-            height: "90%",
+            height: "70%",
           }}
         >
           <WordCloud
             words={sortedWords}
-            width={width}
-            height={height}
+            width={1800}
+            height={1000}
             timeInterval={timeInterval}
             spiral={spiral as SpiralValue}
             transition={transition}
