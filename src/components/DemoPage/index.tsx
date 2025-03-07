@@ -60,8 +60,6 @@ CONCLUSION
 The modern web development landscape is rich with powerful tools and frameworks that empower developers to create dynamic, interactive, and scalable applications. By harnessing React’s component model, Vite’s blazing-fast builds, D3’s data visualization prowess, d3-cloud’s specialized word layout algorithm, and Next.js’s fullstack capabilities, developers can build applications that are not only technically impressive but also deeply engaging for users. This harmonious integration of technologies, combined with best practices and a commitment to continuous learning, is defining the future of web development. As these tools continue to evolve, the journey of innovation will push the boundaries of what’s possible on the web, paving the way for increasingly sophisticated digital experiences.
 ` as const;
 
-const SCALE_ANIMATION_DURATION = 150;
-
 export const GRADIENTS: Gradient[] = [
   {
     id: "gradient1",
@@ -218,6 +216,8 @@ export const DemoPage = () => {
     animationDurationMultiplier,
     enableTooltip,
     useGradients,
+    scaleDuration,
+    scaleSize,
   } = useDemoControls();
 
   const words = useMemo(() => extractWords(textToUse), [textToUse]);
@@ -343,14 +343,14 @@ export const DemoPage = () => {
       }
 
       // Set a temporary scale transition.
-      element.style.transition = `all ${SCALE_ANIMATION_DURATION}ms ease`;
+      element.style.transition = `all ${scaleDuration}ms ease`;
 
       const originalTransform = element.dataset.originalTransform;
 
       // Remove any existing scale transforms.
       const transformWithoutScale = originalTransform.replace(/\s*scale\([^)]*\)/g, "");
 
-      const newTransform = `${transformWithoutScale} scale(1.3)`;
+      const newTransform = `${transformWithoutScale} scale(${scaleSize})`;
       element.setAttribute("transform", newTransform);
 
       // Bring the element to the front.
@@ -358,11 +358,11 @@ export const DemoPage = () => {
         if (element.parentNode) {
           element.parentNode.appendChild(element);
         }
-      }, SCALE_ANIMATION_DURATION);
+      }, scaleDuration);
 
-      element.style.filter = "drop-shadow(2px 4px 6px rgba(0,0,0,0.3))";
+      element.style.filter = `drop-shadow(2px 4px 6px ${useGradients ? "rgba(0,0,0,0.3)" : _word.fill + "E6"})`;
     },
-    [],
+    [scaleDuration, scaleSize, useGradients],
   );
 
   const handleWordMouseOut = useCallback(
@@ -373,7 +373,7 @@ export const DemoPage = () => {
       const originalTransition = element.dataset.originalTransition || "all 0.5s ease";
 
       // Use a fast transition on mouse out.
-      element.style.transition = `all ${SCALE_ANIMATION_DURATION}ms ease`;
+      element.style.transition = `all ${scaleDuration}ms ease`;
 
       // Restore the original transform.
       const originalTransform = element.dataset.originalTransform || "";
@@ -385,9 +385,9 @@ export const DemoPage = () => {
       // AfRestore the original transition style.
       setTimeout(() => {
         element.style.transition = originalTransition;
-      }, SCALE_ANIMATION_DURATION);
+      }, scaleDuration);
     },
-    [],
+    [scaleDuration],
   );
 
   const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {

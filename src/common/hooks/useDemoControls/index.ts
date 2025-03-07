@@ -17,6 +17,8 @@ type DemoControls = {
   animationDurationMultiplier: number;
   enableTooltip: boolean;
   useGradients: boolean;
+  scaleDuration: number;
+  scaleSize: number;
 };
 
 export function useDemoControls(): DemoControls {
@@ -37,6 +39,8 @@ export function useDemoControls(): DemoControls {
     animationDurationMultiplier,
     enableTooltip,
     useGradients,
+    scaleDuration,
+    scaleSize,
   } = useControls({
     timeInterval: { value: 1, min: 0, max: 9999, step: 0.1, label: "Time Interval" },
     spiral: { value: "archimedean", options: ["archimedean", "rectangular"], label: "Spiral" },
@@ -87,6 +91,8 @@ export function useDemoControls(): DemoControls {
     },
     enableTooltip: { value: true, label: "Enable Tooltip" },
     useGradients: { value: false, label: "Use Gradients" },
+    scaleDuration: { value: 150, min: 0, max: 10000, step: 10, label: "Scale Duration (MS)" },
+    scaleSize: { value: 1.3, min: 1, max: 10, step: 0.1, label: "Scale Size" },
   });
 
   return {
@@ -106,5 +112,7 @@ export function useDemoControls(): DemoControls {
     animationDurationMultiplier,
     enableTooltip,
     useGradients,
+    scaleDuration,
+    scaleSize,
   };
 }
