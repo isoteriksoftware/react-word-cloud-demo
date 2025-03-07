@@ -12,4 +12,4 @@ This is a simple Next.js app that demonstrates the features of [@isoterik/react-
 1. Use the text area to input the text you want to generate a word cloud from.
 2. Click the "Generate Word Cloud" button to generate the word cloud.
 3. Use the sliders to adjust the word cloud settings.
-4. Click the "Download Word Cloud" button to download the word cloud as an image.
+4. Click one of the "Download Word Cloud" buttons to download the word cloud in SVG or PNG format.
