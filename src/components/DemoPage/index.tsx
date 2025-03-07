@@ -2,7 +2,7 @@
 
 import { Footer } from "../Footer";
 import { TextArea } from "../TextArea";
-import { ChangeEvent, Ref, useCallback, useMemo, useState } from "react";
+import { ChangeEvent, Ref, useCallback, useMemo, useRef, useState } from "react";
 import { Button } from "../Button";
 import { extractWords } from "@/common/utils";
 import {
@@ -198,6 +198,128 @@ export const GRADIENTS: Gradient[] = [
 export const DemoPage = () => {
   const [text, setText] = useState<string>(INITIAL_TEXT);
   const [textToUse, setTextToUse] = useState<string>(INITIAL_TEXT);
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
+
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  const cleanSvg = (svg: SVGElement): SVGElement => {
+    const clone = svg.cloneNode(true) as SVGElement;
+    const unnecessaryAttributes: string[] = [
+      "data-testid",
+      "data-original-transform",
+      "data-original-transition",
+    ];
+
+    const removeUnnecessaryAttributes = (node: Element) => {
+      for (const attr of unnecessaryAttributes) {
+        if (node.hasAttribute(attr)) {
+          node.removeAttribute(attr);
+        }
+      }
+
+      Array.from(node.children).forEach(removeUnnecessaryAttributes);
+    };
+
+    removeUnnecessaryAttributes(clone);
+    return clone;
+  };
+
+  const handleDownloadCloud = (format: "png" | "svg") => {
+    if (isDownloading) {
+      return;
+    }
+
+    if (!svgRef.current) {
+      toast.error("Oops! Something went wrong. Please reload and try again.");
+      return;
+    }
+
+    setIsDownloading(true);
+
+    const downloadPromise = new Promise<void>((resolve, reject) => {
+      const svgElement = svgRef.current;
+      if (!svgElement) {
+        return reject(new Error("SVG element not found. Please reload!"));
+      }
+
+      // Clone and clean the SVG by removing data-testid attributes.
+      const cleanedSvgElement = cleanSvg(svgElement);
+
+      // Serialize the cleaned SVG content.
+      const serializer = new XMLSerializer();
+      let source = serializer.serializeToString(cleanedSvgElement);
+
+      // Ensure required namespaces are included.
+      if (!source.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+      }
+      if (!source.match(/^<svg[^>]+"http:\/\/www\.w3\.org\/1999\/xlink"/)) {
+        source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+      }
+
+      if (format === "svg") {
+        // Create an SVG Blob and trigger download.
+        const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = "react-word-cloud.svg";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        resolve();
+      } else if (format === "png") {
+        // Convert the SVG to a PNG by drawing it on a canvas.
+        const svgBlob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+        const url = URL.createObjectURL(svgBlob);
+        const image = new Image();
+
+        image.onload = () => {
+          // Create a canvas with the dimensions of the SVG element.
+          const canvas = document.createElement("canvas");
+          canvas.width = svgElement.clientWidth;
+          canvas.height = svgElement.clientHeight;
+          const context = canvas.getContext("2d");
+
+          if (context) {
+            context.drawImage(image, 0, 0);
+            const pngDataUrl = canvas.toDataURL("image/png");
+            const link = document.createElement("a");
+            link.href = pngDataUrl;
+            link.download = "react-word-cloud.png";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            resolve();
+          } else {
+            URL.revokeObjectURL(url);
+            reject(new Error("Unable to get canvas context."));
+          }
+        };
+
+        image.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error("Error loading image."));
+        };
+
+        image.src = url;
+      } else {
+        reject(new Error("Unsupported format."));
+      }
+    });
+
+    toast
+      .promise(downloadPromise, {
+        loading: "Downloading the cloud...",
+        success: "Download complete!",
+        error: "Oops! Something went wrong. Please reload and try again.",
+      })
+      .finally(() => setIsDownloading(false));
+  };
 
   const {
     timeInterval,
@@ -218,7 +340,7 @@ export const DemoPage = () => {
     useGradients,
     scaleDuration,
     scaleSize,
-  } = useDemoControls();
+  } = useDemoControls(handleDownloadCloud);
 
   const words = useMemo(() => extractWords(textToUse), [textToUse]);
 
@@ -443,6 +565,7 @@ export const DemoPage = () => {
           }}
         >
           <WordCloud
+            ref={svgRef}
             words={sortedWords}
             width={1800}
             height={1000}

@@ -1,4 +1,4 @@
-import { useControls } from "leva";
+import { button, useControls } from "leva";
 
 type DemoControls = {
   timeInterval: number;
@@ -21,7 +21,9 @@ type DemoControls = {
   scaleSize: number;
 };
 
-export function useDemoControls(): DemoControls {
+export function useDemoControls(
+  handleDownloadCloud: (format: "png" | "svg") => void,
+): DemoControls {
   const {
     timeInterval,
     spiral,
@@ -93,6 +95,8 @@ export function useDemoControls(): DemoControls {
     useGradients: { value: false, label: "Use Gradients" },
     scaleDuration: { value: 150, min: 0, max: 10000, step: 10, label: "Scale Duration (MS)" },
     scaleSize: { value: 1.3, min: 1, max: 10, step: 0.1, label: "Scale Size" },
+    "Download Word Cloud (SVG)": button(() => handleDownloadCloud("svg")),
+    "Download Word Cloud (PNG)": button(() => handleDownloadCloud("png")),
   });
 
   return {
