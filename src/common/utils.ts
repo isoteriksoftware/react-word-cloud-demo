@@ -1,6 +1,6 @@
 import { removeStopwords } from "stopword";
 import nlp from "compromise";
-import { Word } from "react-word-cloud";
+import { Word } from "@isoterik/react-word-cloud";
 
 export const capitalize = (word: string): string => word.charAt(0).toUpperCase() + word.slice(1);
 
