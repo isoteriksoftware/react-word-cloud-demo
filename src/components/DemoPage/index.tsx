@@ -290,7 +290,7 @@ export const DemoPage = () => {
           borderRadius: "10px",
           flexDirection: "column",
           minWidth: "100px",
-          background: `${data.word?.fill}E6`, // 90% opacity
+          background: `${useGradients ? "rgba(0, 0, 0, .9)" : data.word?.fill}E6`,
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
         }}
         textStyle={{
@@ -305,7 +305,7 @@ export const DemoPage = () => {
         }}
       />
     ),
-    [],
+    [useGradients],
   );
 
   const resolveWordRenderer = useCallback(
