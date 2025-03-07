@@ -13,6 +13,8 @@ import {
   WordCloud,
   WordRendererData,
   AnimatedWordRenderer,
+  Gradient,
+  defaultFill,
 } from "react-word-cloud";
 import { useDemoControls } from "@/common/hooks";
 
@@ -55,6 +57,141 @@ CONCLUSION
 The modern web development landscape is rich with powerful tools and frameworks that empower developers to create dynamic, interactive, and scalable applications. By harnessing React’s component model, Vite’s blazing-fast builds, D3’s data visualization prowess, d3-cloud’s specialized word layout algorithm, and Next.js’s fullstack capabilities, developers can build applications that are not only technically impressive but also deeply engaging for users. This harmonious integration of technologies, combined with best practices and a commitment to continuous learning, is defining the future of web development. As these tools continue to evolve, the journey of innovation will push the boundaries of what’s possible on the web, paving the way for increasingly sophisticated digital experiences.
 ` as const;
 
+export const GRADIENTS: Gradient[] = [
+  {
+    id: "gradient1",
+    type: "linear",
+    angle: 45,
+    stops: [
+      { offset: "0%", color: "#ff7e5f" },
+      { offset: "100%", color: "#feb47b" },
+    ],
+  },
+  {
+    id: "gradient2",
+    type: "linear",
+    angle: 90,
+    stops: [
+      { offset: "0%", color: "#43cea2" },
+      { offset: "100%", color: "#185a9d" },
+    ],
+  },
+  {
+    id: "gradient3",
+    type: "linear",
+    angle: 135,
+    stops: [
+      { offset: "0%", color: "#f7971e" },
+      { offset: "50%", color: "#ffd200" },
+      { offset: "100%", color: "#ff7e5f" },
+    ],
+  },
+  {
+    id: "gradient4",
+    type: "radial",
+    stops: [
+      { offset: "0%", color: "#6a11cb" },
+      { offset: "100%", color: "#2575fc" },
+    ],
+  },
+  {
+    id: "gradient5",
+    type: "linear",
+    angle: 0,
+    stops: [
+      { offset: "0%", color: "#ff4e50" },
+      { offset: "100%", color: "#f9d423" },
+    ],
+  },
+  {
+    id: "gradient6",
+    type: "radial",
+    stops: [
+      { offset: "0%", color: "#1a2980" },
+      { offset: "100%", color: "#26d0ce" },
+    ],
+  },
+  {
+    id: "gradient7",
+    type: "linear",
+    angle: 60,
+    stops: [
+      { offset: "0%", color: "#00c6ff" },
+      { offset: "100%", color: "#0072ff" },
+    ],
+  },
+  {
+    id: "gradient8",
+    type: "linear",
+    angle: 120,
+    stops: [
+      { offset: "0%", color: "#f953c6" },
+      { offset: "100%", color: "#b91d73" },
+    ],
+  },
+  {
+    id: "gradient9",
+    type: "radial",
+    stops: [
+      { offset: "0%", color: "#43e97b" },
+      { offset: "100%", color: "#38f9d7" },
+    ],
+  },
+  {
+    id: "gradient10",
+    type: "linear",
+    angle: 30,
+    stops: [
+      { offset: "0%", color: "#ee0979" },
+      { offset: "50%", color: "#ff6a00" },
+      { offset: "100%", color: "#f7971e" },
+    ],
+  },
+  {
+    id: "gradient11",
+    type: "linear",
+    angle: 75,
+    stops: [
+      { offset: "0%", color: "#2193b0" },
+      { offset: "100%", color: "#6dd5ed" },
+    ],
+  },
+  {
+    id: "gradient12",
+    type: "radial",
+    stops: [
+      { offset: "0%", color: "#cc2b5e" },
+      { offset: "100%", color: "#753a88" },
+    ],
+  },
+  {
+    id: "gradient13",
+    type: "linear",
+    angle: 150,
+    stops: [
+      { offset: "0%", color: "#42275a" },
+      { offset: "100%", color: "#734b6d" },
+    ],
+  },
+  {
+    id: "gradient14",
+    type: "radial",
+    stops: [
+      { offset: "0%", color: "#ff0844" },
+      { offset: "100%", color: "#ffb199" },
+    ],
+  },
+  {
+    id: "gradient15",
+    type: "linear",
+    angle: 90,
+    stops: [
+      { offset: "0%", color: "#00d2ff" },
+      { offset: "100%", color: "#3a7bd5" },
+    ],
+  },
+] as const;
+
 export const DemoPage = () => {
   const [text, setText] = useState<string>(INITIAL_TEXT);
   const [textToUse, setTextToUse] = useState<string>(INITIAL_TEXT);
@@ -75,6 +212,7 @@ export const DemoPage = () => {
     maxWords,
     animationDurationMultiplier,
     enableTooltip,
+    useGradients,
   } = useDemoControls();
 
   const words = useMemo(() => extractWords(textToUse), [textToUse]);
@@ -120,6 +258,22 @@ export const DemoPage = () => {
   const resolveRotate = useCallback(() => {
     return Math.floor(Math.random() * (maxRotation - minRotation + 1) + minRotation);
   }, [maxRotation, minRotation]);
+
+  const resolveGradientFill = useCallback(() => {
+    const gradient = GRADIENTS[Math.floor(Math.random() * GRADIENTS.length)];
+    return `url(#${gradient.id})`;
+  }, []);
+
+  const resolveFill = useCallback(
+    (word: Word, index: number) => {
+      if (useGradients) {
+        return resolveGradientFill();
+      } else {
+        return typeof defaultFill === "function" ? defaultFill(word, index) : defaultFill;
+      }
+    },
+    [resolveGradientFill, useGradients],
+  );
 
   const resolveFontSize = useCallback(
     (word: Word) => {
@@ -219,6 +373,7 @@ export const DemoPage = () => {
             words={sortedWords}
             width={1800}
             height={1000}
+            gradients={GRADIENTS}
             timeInterval={timeInterval}
             spiral={spiral as SpiralValue}
             transition={transition}
@@ -226,6 +381,7 @@ export const DemoPage = () => {
             fontStyle={fontStyle}
             fontWeight={resoleFontWeight}
             fontSize={resolveFontSize}
+            fill={resolveFill}
             padding={padding}
             rotate={resolveRotate}
             renderWord={resolveWordRenderer}

@@ -16,6 +16,7 @@ type DemoControls = {
   maxWords: number;
   animationDurationMultiplier: number;
   enableTooltip: boolean;
+  useGradients: boolean;
 };
 
 export function useDemoControls(): DemoControls {
@@ -35,6 +36,7 @@ export function useDemoControls(): DemoControls {
     maxWords,
     animationDurationMultiplier,
     enableTooltip,
+    useGradients,
   } = useControls({
     timeInterval: { value: 1, min: 0, max: 9999, step: 0.1, label: "Time Interval" },
     spiral: { value: "archimedean", options: ["archimedean", "rectangular"], label: "Spiral" },
@@ -84,6 +86,7 @@ export function useDemoControls(): DemoControls {
       label: "Entrance Delay Multiplier",
     },
     enableTooltip: { value: true, label: "Enable Tooltip" },
+    useGradients: { value: false, label: "Use Gradients" },
   });
 
   return {
@@ -102,5 +105,6 @@ export function useDemoControls(): DemoControls {
     maxWords,
     animationDurationMultiplier,
     enableTooltip,
+    useGradients,
   };
 }
