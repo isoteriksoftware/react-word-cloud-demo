@@ -17,6 +17,7 @@ import {
   defaultFill,
 } from "react-word-cloud";
 import { useDemoControls } from "@/common/hooks";
+import toast, { Toaster } from "react-hot-toast";
 
 const INITIAL_TEXT = `
 THE MODERN WEB DEVELOPMENT LANDSCAPE: HARNESSING CUTTING-EDGE TOOLS FOR DYNAMIC APPLICATIONS
@@ -319,6 +320,10 @@ export const DemoPage = () => {
     [animationDurationMultiplier],
   );
 
+  const handleWordClick = useCallback((word: Word) => {
+    toast.success(`Clicked on word: ${word.text}`);
+  }, []);
+
   const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
@@ -337,6 +342,8 @@ export const DemoPage = () => {
         left: 0,
       }}
     >
+      <Toaster />
+
       <div
         style={{
           width: "100%",
@@ -387,6 +394,7 @@ export const DemoPage = () => {
             renderWord={resolveWordRenderer}
             renderTooltip={resoleTooltipRenderer}
             enableTooltip={enableTooltip}
+            onWordClick={handleWordClick}
           />
         </div>
       </div>
