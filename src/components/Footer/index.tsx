@@ -2,6 +2,7 @@
 import githubIcon from "@/assets/github.svg";
 
 const GITHUB_USERNAME = "isoteriksoftware";
+const NPM_USERNAME = "isoterik";
 const LIBRARY_NAME = "react-word-cloud";
 const DEMO_REPO = "react-word-cloud-demo";
 
@@ -30,11 +31,11 @@ export const Footer = () => {
           flexGrow: 1,
         }}
       >
-        <a href={`https://www.npmjs.com/package/${LIBRARY_NAME}`} target="_blank">
+        <a href={`https://www.npmjs.com/package/@${NPM_USERNAME}/${LIBRARY_NAME}`} target="_blank">
           <img src={`https://img.shields.io/npm/v/${LIBRARY_NAME}.svg`} alt="NPM" />
         </a>
 
-        <img src={`https://img.shields.io/npm/dt/${LIBRARY_NAME}.svg`} alt="NPM" />
+        <img src={`https://img.shields.io/npm/dt/@${NPM_USERNAME}/${LIBRARY_NAME}.svg`} alt="NPM" />
 
         <a href={`https://github.com/${GITHUB_USERNAME}/${LIBRARY_NAME}`} target="_blank">
           <img

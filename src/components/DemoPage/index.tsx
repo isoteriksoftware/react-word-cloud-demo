@@ -15,7 +15,9 @@ import {
   AnimatedWordRenderer,
   Gradient,
   defaultFill,
-} from "react-word-cloud";
+  FinalWordData,
+  WordMouseEvent,
+} from "@isoterik/react-word-cloud";
 import { useDemoControls } from "@/common/hooks";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -57,6 +59,8 @@ CONCLUSION
 
 The modern web development landscape is rich with powerful tools and frameworks that empower developers to create dynamic, interactive, and scalable applications. By harnessing React’s component model, Vite’s blazing-fast builds, D3’s data visualization prowess, d3-cloud’s specialized word layout algorithm, and Next.js’s fullstack capabilities, developers can build applications that are not only technically impressive but also deeply engaging for users. This harmonious integration of technologies, combined with best practices and a commitment to continuous learning, is defining the future of web development. As these tools continue to evolve, the journey of innovation will push the boundaries of what’s possible on the web, paving the way for increasingly sophisticated digital experiences.
 ` as const;
+
+const SCALE_ANIMATION_DURATION = 150;
 
 export const GRADIENTS: Gradient[] = [
   {
@@ -320,9 +324,71 @@ export const DemoPage = () => {
     [animationDurationMultiplier],
   );
 
-  const handleWordClick = useCallback((word: Word) => {
+  const handleWordClick = useCallback((word: FinalWordData) => {
     toast.success(`Clicked on word: ${word.text}`);
   }, []);
+
+  const handleWordMouseOver = useCallback(
+    (_word: FinalWordData, _index: number, event: WordMouseEvent) => {
+      const element = event.currentTarget;
+
+      // Store the original transform if not already stored.
+      if (!element.dataset.originalTransform) {
+        element.dataset.originalTransform = element.getAttribute("transform") || "";
+      }
+
+      // Store the original transition style if not stored.
+      if (!element.dataset.originalTransition) {
+        element.dataset.originalTransition = element.style.transition || "";
+      }
+
+      // Set a temporary scale transition.
+      element.style.transition = `all ${SCALE_ANIMATION_DURATION}ms ease`;
+
+      const originalTransform = element.dataset.originalTransform;
+
+      // Remove any existing scale transforms.
+      const transformWithoutScale = originalTransform.replace(/\s*scale\([^)]*\)/g, "");
+
+      const newTransform = `${transformWithoutScale} scale(1.3)`;
+      element.setAttribute("transform", newTransform);
+
+      // Bring the element to the front.
+      setTimeout(() => {
+        if (element.parentNode) {
+          element.parentNode.appendChild(element);
+        }
+      }, SCALE_ANIMATION_DURATION);
+
+      element.style.filter = "drop-shadow(2px 4px 6px rgba(0,0,0,0.3))";
+    },
+    [],
+  );
+
+  const handleWordMouseOut = useCallback(
+    (_word: FinalWordData, _index: number, event: WordMouseEvent) => {
+      const element = event.currentTarget;
+
+      // Retrieve the original transition; fallback to a default slow transition.
+      const originalTransition = element.dataset.originalTransition || "all 0.5s ease";
+
+      // Use a fast transition on mouse out.
+      element.style.transition = `all ${SCALE_ANIMATION_DURATION}ms ease`;
+
+      // Restore the original transform.
+      const originalTransform = element.dataset.originalTransform || "";
+      element.setAttribute("transform", originalTransform);
+
+      // Remove the drop-shadow.
+      element.style.filter = "";
+
+      // AfRestore the original transition style.
+      setTimeout(() => {
+        element.style.transition = originalTransition;
+      }, SCALE_ANIMATION_DURATION);
+    },
+    [],
+  );
 
   const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
@@ -395,6 +461,8 @@ export const DemoPage = () => {
             renderTooltip={resoleTooltipRenderer}
             enableTooltip={enableTooltip}
             onWordClick={handleWordClick}
+            onWordMouseOver={handleWordMouseOver}
+            onWordMouseOut={handleWordMouseOut}
           />
         </div>
       </div>
