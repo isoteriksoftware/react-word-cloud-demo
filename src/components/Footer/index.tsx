@@ -32,7 +32,10 @@ export const Footer = () => {
         }}
       >
         <a href={`https://www.npmjs.com/package/@${NPM_USERNAME}/${LIBRARY_NAME}`} target="_blank">
-          <img src={`https://img.shields.io/npm/v/${LIBRARY_NAME}.svg`} alt="NPM" />
+          <img
+            src={`https://img.shields.io/npm/v/@${NPM_USERNAME}/${LIBRARY_NAME}.svg`}
+            alt="NPM"
+          />
         </a>
 
         <img src={`https://img.shields.io/npm/dt/@${NPM_USERNAME}/${LIBRARY_NAME}.svg`} alt="NPM" />
