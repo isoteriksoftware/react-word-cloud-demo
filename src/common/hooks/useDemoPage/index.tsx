@@ -475,7 +475,7 @@ export const useDemoPage = () => {
         }
       }, scaleDuration);
 
-      element.style.filter = `drop-shadow(2px 4px 6px ${useGradients ? "rgba(0,0,0,0.3)" : _word.fill + "E6"})`;
+      element.style.filter = `drop-shadow(2px 4px 6px ${useGradients ? "rgba(0,0,0,0.15)" : _word.fill + "E6"})`;
     },
     [scaleDuration, scaleSize, useGradients],
   );
